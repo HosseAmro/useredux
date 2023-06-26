@@ -17,6 +17,6 @@ export const counterSlice = createSlice({
   },
 });
 
-export const action = counterSlice.actions;
+export const counterAC = counterSlice.actions;
 export const counterReducer = counterSlice.reducer;
 export const count = (store) => store.counter.value;

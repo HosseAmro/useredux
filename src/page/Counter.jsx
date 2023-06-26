@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import { action, count } from "./store/Slices/Counter";
+import { counterAC, count } from "../store/Slices/CounterSlice";
 import { useState } from "react";
 
 export default function Counter() {
@@ -9,15 +9,15 @@ export default function Counter() {
   const value = useSelector(count);
   const dispatch = useDispatch();
   function Change(n) {
-    dispatch(action.Change(n));
+    dispatch(counterAC.Change(n)); 
   }
   function Rest() {
-    dispatch(action.Reset());
+    dispatch(counterAC.Reset());
     setAdd(0);
   }
   return (
     <>
-      <div className=" mt-7 m-auto w-[20rem] p-2 text-center rounded-3xl border-4 border-zinc-600     ">
+      <main className=" mt-7 m-auto w-[20rem] p-2 text-center rounded-3xl border-4 border-zinc-600     ">
         <h2 className="text-3xl mt-3">Counter</h2>
         <h1 className="text-6xl my-14">{value}</h1>
 
@@ -52,7 +52,7 @@ export default function Counter() {
         >
           rest
         </button>
-      </div>
+      </main>
     </>
   );
 }
