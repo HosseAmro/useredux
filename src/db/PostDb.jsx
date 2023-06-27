@@ -40,6 +40,11 @@ class PostApi {
     const store = await this.getStore();
     return store.getAll();
   }
+  async length() {
+    const store = await this.getStore();
+    const all = await store.getAll();
+    return all.length;
+  }
 }
 
 const postApi = new PostApi();
