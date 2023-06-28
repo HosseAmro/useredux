@@ -28,9 +28,10 @@ class PostApi {
     const store = await this.getStore();
     return store.delete(id);
   }
-  async update(todo) {
+  async update(post) {
     const store = await this.getStore();
-    return store.put(todo);
+    const id = await store.put(post);
+    return this.get(id);
   }
   async get(id) {
     const store = await this.getStore();

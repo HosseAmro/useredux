@@ -1,9 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  user: [
+    { nameUser: "Hossin Fati" },
+    { nameUser: "Ali Ansari" },
+    { nameUser: "Bahram Zargar" },
+    { nameUser: "Shahab Ghasemi" },
+  ],
   new: {
     title: "",
     content: "",
+    auther: "",
   },
   allPost: [],
 };
@@ -49,6 +56,15 @@ export const postsSlice = createSlice({
     clear: (state) => {
       state.new.title = "";
       state.new.content = "";
+      state.new.auther = "";
+    },
+    replase: (state, action) => {
+      state.allPost = state.allPost.map((post) => {
+        if (post.id === action.payload.id) {
+          return (post = action.payload);
+        }
+        return post;
+      });
     },
   },
 });
