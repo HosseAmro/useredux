@@ -8,7 +8,7 @@ export default function Auther(p) {
 
   const ShowAllUser = allUser.map((user, i) => {
     return (
-      <option key={i} className="text-[1.8rem]" value={user.nameUser}>
+      <option key={i} className="text-[1.8rem]" value={user.userId}>
         {user.nameUser}
       </option>
     );

@@ -1,11 +1,23 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+import { sub } from "date-fns";
+
+const POST_URL = "https://jsonplaceholder.typicode.com/posts";
+export const getPosts = createAsyncThunk("posts/getPosts", async () => {
+  try {
+    const response = await axios.get(POST_URL);
+    return response.data;
+  } catch (err) {
+    return ErrorEvent.message;
+  }
+});
 
 const initialState = {
   user: [
-    { nameUser: "Hossin Fati" },
-    { nameUser: "Ali Ansari" },
-    { nameUser: "Bahram Zargar" },
-    { nameUser: "Shahab Ghasemi" },
+    { nameUser: "Hossin Fati", useId: "11" },
+    { nameUser: "Ali Ansari", useId: "12" },
+    { nameUser: "Bahram Zargar", useId: "13" },
+    { nameUser: "Shahab Ghasemi", useId: "14" },
   ],
   new: {
     title: "",
@@ -13,6 +25,8 @@ const initialState = {
     auther: "",
   },
   allPost: [],
+  status: "idle",
+  error: null,
 };
 
 export const postsSlice = createSlice({
@@ -38,7 +52,7 @@ export const postsSlice = createSlice({
       });
     },
     push: (state, action) => {
-      state.allPost.push(action.payload);
+      state.allPost.unshift(action.payload);
     },
     change: {
       reducer: (state, action) => {
@@ -66,6 +80,41 @@ export const postsSlice = createSlice({
         return post;
       });
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getPosts.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(getPosts.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      })
+      .addCase(getPosts.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        let min = 1;
+        const NewPosts = action.payload.map((post) => {
+          post.date = sub(new Date(), { minutes: min++ });
+          console.log(post.date);
+
+          (post.reaction = {
+            wow: 0,
+            like: 0,
+            angry: 0,
+            sad: 0,
+          }),
+            (post.content = post.body);
+          delete post.body;
+          return post;
+        });
+        const uniqSort = NewPosts.sort((a, b) => {
+          return b.date - a.date;
+        });
+        state.allPost.splice(0);
+        uniqSort.map((post) => {
+          state.allPost.push(post);
+        });
+      });
   },
 });
 

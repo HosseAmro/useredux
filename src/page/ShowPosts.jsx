@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
-import { allPosts, postsAC } from "../store/Slices/PostsSlice";
-import postApi from "../db/PostDb";
+import { allPosts, getPosts } from "../store/Slices/PostsSlice";
+// import postApi from "../db/PostDb";
 import { useEffect } from "react";
 import ShowAuther from "../components/ShowAuther";
 import ShowTime from "../components/ShowTime";
@@ -11,14 +11,9 @@ export default function ShowPost() {
   const posts = useSelector(allPosts);
 
   useEffect(() => {
-    async function load() {
-      //as db to redux
-      const post = await postApi.getAll();
-      dispatch(postsAC.load(post));
-    }
-    load();
+    dispatch(getPosts());
   }, [dispatch]);
-  
+
   let showPost;
   if (posts.length) {
     showPost = posts.map((post, i) => {
